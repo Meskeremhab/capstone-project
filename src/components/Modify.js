@@ -1,109 +1,119 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { Alert, Button, Form } from 'react-bootstrap';
 
-const ModifyPortfolio = ({ userId, onActionComplete }) => {
+const Modify = ({ userId, onActionComplete }) => {
+  const [actionType, setActionType] = useState('');
   const [formData, setFormData] = useState({
-    ticker: "",
-    quantity: "",
+    ticker: '',
+    quantity: '',
   });
-
-  // Add a state for selected item ID for modify/delete operations
-  const [selectedItemId, setSelectedItemId] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleItemSelect = (e) => {
-    setSelectedItemId(e.target.value);
-  };
-
-  const handleAction = async (actionType) => {
-    const urlMap = {
-      modify: "/modify_portfolio",
-      create: "/create_portfolio",
-      delete: "/delete_portfolio",
+  const handleAction = async (e) => {
+    e.preventDefault();
+    const url = 'http://localhost:5000/edit_stock';
+    let options = {
+      method: actionType === 'delete' ? 'DELETE' : 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // Necessary to include cookies with the request
     };
-
-    const methodMap = {
-      modify: "POST",
-      create: "POST",
-      delete: "DELETE",
-    };
-
-    const bodyData =
-      actionType === "create"
-        ? { action: actionType, user_id: userId, ...formData }
-        : {
-            action: actionType,
-            item_id: selectedItemId,
-            user_id: userId,
-            ...formData,
-          };
-
+  
+    // Add body only for POST and DELETE requests
+    if (actionType !== 'delete') {
+      options = { ...options, body: JSON.stringify({ ...formData, action: actionType, user_id: userId }) };
+    } else {
+      options = { ...options, body: JSON.stringify({ action: actionType, ticker: formData.ticker, user_id: userId }) };
+    }
+  
     try {
-      const response = await fetch(urlMap[actionType], {
-        method: methodMap[actionType],
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyData),
-      });
-      const result = await response.json();
+      const response = await fetch(url, options);
+  
+      // Handle non-OK responses
       if (!response.ok) {
-        throw new Error(
-          result.message || `HTTP error! status: ${response.status}`
-        );
+        let errorText = `Request failed with status ${response.status}`;
+        if (response.headers.get('Content-Type')?.includes('application/json')) {
+          const errorData = await response.json();
+          errorText = errorData.message || errorText;
+        }
+        throw new Error(errorText);
       }
-      console.log(result);
-      onActionComplete(result); // Pass the result up for any UI updates
+  
+      // Process response for POST actions
+      if (actionType !== 'delete') {
+        const result = await response.json();
+        onActionComplete(result);
+      } else {
+        // Assume delete was successful without needing to parse JSON
+  onActionComplete();
+      }
     } catch (error) {
-      console.error("Error with action:", actionType, error);
+      console.error(error);
+      setErrorMessage(error.message);
     }
   };
 
+     
+
   return (
     <div>
-      <h2>Modify Portfolio</h2>
-      {/* Remove the item_id input field for create operation */}
-      {/* Include it for modify/delete operations along with a way to select the item to be modified/deleted */}
-      {selectedItemId && (
-        <>
-          <label>
-            Selected Item ID:
-            <select value={selectedItemId} onChange={handleItemSelect}>
-              {/* Options should be dynamically generated based on user's portfolio */}
-            </select>
-          </label>
-        </>
-      )}
-      <input
-        name="ticker"
-        value={formData.ticker}
-        onChange={handleChange}
-        placeholder="Ticker Symbol"
-      />
-      <input
-        type="number"
-        name="quantity"
-        value={formData.quantity}
-        onChange={handleChange}
-        placeholder="Quantity"
-      />
-      {selectedItemId && (
-        <>
-          <button onClick={() => handleAction("modify")}>Modify</button>
-          <button onClick={() => handleAction("delete")}>Delete</button>
-        </>
-      )}
-      {!selectedItemId && (
-        <button onClick={() => handleAction("create")}>Create</button>
-      )}
+      <Form onSubmit={handleAction}>
+        <h2>Edit Stock</h2>
+        {/* Action Type Select */}
+        <Form.Group>
+          <Form.Label>Action Type</Form.Label>
+          <Form.Control
+            as="select"
+            value={actionType}
+            onChange={(e) => setActionType(e.target.value)}
+            required
+          >
+            <option value="">Select Action</option>
+            <option value="create">Create New Stock</option>
+            <option value="modify">Modify Existing Stock</option>
+            <option value="delete">Delete Stock</option>
+          </Form.Control>
+        </Form.Group>
+
+        {/* Ticker Input */}
+        <Form.Group>
+          <Form.Label>Ticker Symbol</Form.Label>
+          <Form.Control
+            type="text"
+            name="ticker"
+            value={formData.ticker}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+
+        {/* Quantity Input */}
+        {actionType !== 'delete' && (
+          <Form.Group>
+            <Form.Label>Quantity</Form.Label>
+            <Form.Control
+              type="number"
+              name="quantity"
+              value={formData.quantity}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+        )}
+
+        <Button type="submit" variant="primary">
+          {actionType.charAt(0).toUpperCase() + actionType.slice(1)} Stock
+        </Button>
+      </Form>
+      {errorMessage && <Alert variant="danger" className="mt-3">{errorMessage}</Alert>}
     </div>
   );
 };
 
-export default ModifyPortfolio;
+export default Modify;

@@ -11,7 +11,9 @@ const Ticker = ({ ticker }) => {
     const fetchTickerData = async () => {
       try {
         // Update the URL with your Flask backend endpoint
-        const response = await fetch(`http://localhost:5000/stock/${ticker}`);
+        const response = await fetch(
+          `http://localhost:5000/stock/${ticker}`
+        );
         if (!response.ok) {
           throw new Error(`Failed to fetch info for ticker: ${ticker}`);
         }

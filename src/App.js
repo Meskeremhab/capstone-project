@@ -1,48 +1,63 @@
-import React, { useState } from "react";
-import Login from "./components/Login";
-import IndexPage from "./components/IndexPage";
-import Ticker from "./components/Ticker"; // Make sure you have this component created as per previous discussions
+import React, { useState } from 'react';
+import Login from './components/Login'; // Make sure this path is correct
+import SignUp from './components/SignUp'; // Make sure this path is correct
+import IndexPage from './components/IndexPage'; // Make sure this path is correct
+import Ticker from './components/Ticker'; // Make sure this path is correct
+import UserProfile from './components/UserProfile'; // Make sure this path is correct
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
-  const [ticker, setTicker] = useState(""); // State to hold the selected ticker symbol
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('userId') !== null);
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
+  const [ticker, setTicker] = useState("");
+  const [isSigningUp, setIsSigningUp] = useState(false);
 
-  // This function gets called when the login is successful
-  const onLoginSuccess = (user) => {
+  const onLoginSuccess = (userId) => {
+    localStorage.setItem('userId', userId);
+    setUserId(userId);
     setIsLoggedIn(true);
-    setUsername(user);
   };
 
-  // This function is passed to IndexPage and gets called with the selected ticker symbol
+  const onLoggedOut = () => {
+    localStorage.removeItem('userId');
+    setIsLoggedIn(false);
+    setUserId(null);
+    setTicker("");
+  };
+
   const handleMoreInfoClick = (tickerSymbol) => {
     setTicker(tickerSymbol);
   };
 
-  // Optional: Call this function to "logout" or to go back to the index page from the ticker page
   const resetTicker = () => {
-    setTicker(""); // This will stop rendering the Ticker component
+    setTicker("");
+  };
+
+  const toggleSignUp = () => {
+    setIsSigningUp(!isSigningUp);
+  };
+
+  const onSignUpSuccess = (userId) => {
+    onLoginSuccess(userId);
   };
 
   return (
     <div>
       {!isLoggedIn ? (
-        // If not logged in, show the Login component
-        <Login onLoginSuccess={onLoginSuccess} />
+        isSigningUp ? (
+          <SignUp onSignUpSuccess={onSignUpSuccess} />
+        ) : (
+          <Login onLoginSuccess={onLoginSuccess} onSignUp={toggleSignUp} />
+        )
       ) : (
         <>
+          <UserProfile userId={userId} onLoggedOut={onLoggedOut} />
           {ticker ? (
-            // If a ticker symbol is selected, show the Ticker component
             <>
               <Ticker ticker={ticker} />
               <button onClick={resetTicker}>Back to Portfolio</button>
             </>
           ) : (
-            // Otherwise, show the IndexPage
-            <IndexPage
-              username={username}
-              onMoreInfoClick={handleMoreInfoClick}
-            />
+            <IndexPage userId={userId} onMoreInfoClick={handleMoreInfoClick} />
           )}
         </>
       )}
