@@ -16,7 +16,7 @@ const Modify = ({ userId, onActionComplete }) => {
 
   const handleAction = async (e) => {
     e.preventDefault();
-    const url = 'http://localhost:5000/edit_stock';
+    const url = 'https://mcsbt-integration-416321.uc.r.appspot.com/edit_stock';
     let options = {
       method: actionType === 'delete' ? 'DELETE' : 'POST',
       headers: {
@@ -27,13 +27,16 @@ const Modify = ({ userId, onActionComplete }) => {
   
     // Add body only for POST and DELETE requests
     if (actionType !== 'delete') {
-      options = { ...options, body: JSON.stringify({ ...formData, action: actionType, user_id: userId }) };
+      options = { ...options, body: JSON.stringify({ ...formData, action: actionType, user_id: userId })
+    };
     } else {
       options = { ...options, body: JSON.stringify({ action: actionType, ticker: formData.ticker, user_id: userId }) };
     }
   
     try {
+      console.log("frontend")
       const response = await fetch(url, options);
+      console.log(response.data)
   
       // Handle non-OK responses
       if (!response.ok) {

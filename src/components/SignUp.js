@@ -22,7 +22,7 @@ function SignUp({ onSignUpSuccess }) {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/signup', {
+      const response = await fetch('https://mcsbt-integration-416321.uc.r.appspot.com/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

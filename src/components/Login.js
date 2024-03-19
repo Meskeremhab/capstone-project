@@ -13,7 +13,7 @@ function Login({ onLoginSuccess, onSignUp }) {
     setError("");
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch('https://mcsbt-integration-416321.uc.r.appspot.com/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

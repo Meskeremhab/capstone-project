@@ -1,19 +1,24 @@
+// IndexPage.js
 import React, { useState, useEffect } from "react";
 import { Container, Alert, Form, Button, Navbar } from "react-bootstrap";
 import Modify from "./Modify";
+import { Line } from 'react-chartjs-2';
+import "./IndexPage.css"; // Import your custom CSS file
 
 const IndexPage = ({ userId, onMoreInfoClick }) => {
   const [portfolioData, setPortfolioData] = useState(null);
   const [error, setError] = useState("");
   const [tickerInput, setTickerInput] = useState("");
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchPortfolio = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/${userId}`, {
+        const response = await fetch(`https://mcsbt-integration-416321.uc.r.appspot.com/${userId}`, {
           headers: {
             Accept: "application/json",
           },
+          credentials: 'include', 
         });
         if (!response.ok) {
           throw new Error(`Failed to fetch portfolio for user ${userId}`);
@@ -38,8 +43,37 @@ const IndexPage = ({ userId, onMoreInfoClick }) => {
     onMoreInfoClick(tickerInput);
   };
 
+  const transformDataForChart = () => {
+    const labels = [];
+    const openData = [];
+
+    // Assuming you want to display the 'open' values over time
+    data && data.map(item => {
+      item.items.map((details) => {
+        Object.entries(details.details.daily_time_series["Time Series (Daily)"]).map(([date, values]) => {
+          labels.push(date);
+          openData.push(parseFloat(values["1. open"]));
+        });
+      });
+    });
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Stock Open Prices',
+          data: openData,
+          fill: false,
+          borderColor: 'rgba(75,192,192,1)',
+        },
+      ],
+    };
+  };
+
+  const chartData = transformDataForChart();
+
   return (
-    <Container>
+    <Container className="custom-container">
       <Navbar bg="light" expand="lg" className="justify-content-between">
         <Navbar.Brand>Welcome to the Portfolio</Navbar.Brand>
       </Navbar>
@@ -61,11 +95,20 @@ const IndexPage = ({ userId, onMoreInfoClick }) => {
             onChange={handleInputChange}
           />
         </Form.Group>
-        <Button variant="primary" onClick={handleMoreInfoClickLocal}>
-          More Info
+        <Button variant="primary" onClick={handleMoreInfoClickLocal} className="custom-button">
+          Details
         </Button>
       </Form>
       <Modify userId={userId} onActionComplete={handleMoreInfoClickLocal} />
+      {/* Chart display */}
+      <div>
+        <h1>Stock Data</h1>
+        {data && (
+          <div>
+            <Line data={chartData} />
+          </div>
+        )}
+      </div>
     </Container>
   );
 };

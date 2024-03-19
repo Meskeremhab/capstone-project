@@ -1,0 +1,26 @@
+/* IndexPage.css */
+
+/* Custom font for headings */
+h1, h2 {
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Custom style for buttons */
+  .custom-button {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .custom-button:hover {
+    background-color: #0056b3; /* Darker shade of primary color */
+  }
+  
+  /* Custom background color for the container */
+  .custom-container {
+    background-color: #f0f0f0; /* Light gray background color */
+  }
+  
