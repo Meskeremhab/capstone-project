@@ -4,6 +4,7 @@ import "./IndexPage.css";
 import Modify from "./Modify";
 import Header from './Header'; 
 import Footer from './Footer'; 
+import ChartComponent from './chartComponent';
 
 
 const IndexPage = ({ userId, onMoreInfoClick }) => {
@@ -114,11 +115,11 @@ const IndexPage = ({ userId, onMoreInfoClick }) => {
                 </tbody>
                 </Table>
 
-               
-     
         {/* Modify component to handle all stock edits */}
         <Modify userId={userId} onActionComplete={onMoreInfoClick} />
-
+        {portfolioData && (
+  <ChartComponent data={portfolioData.someArray} /> 
+)}
       </Container>
       <Footer />
     </>
