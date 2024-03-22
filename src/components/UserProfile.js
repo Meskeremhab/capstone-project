@@ -8,10 +8,10 @@ const UserProfile = ({ userId, onLoggedOut }) => {
   };
 
   const handleLogout = async () => {
-    // Call your backend's logout endpoint
+   
     const response = await fetch('https://mcsbt-integration-416321.uc.r.appspot.com/logout', {
       method: 'POST',
-      credentials: 'include', // Required to handle cookies if used
+      credentials: 'include', 
     });
 
     if (response.ok) {

@@ -42,7 +42,7 @@ function SignUp({ onSignUpSuccess, navigateToLogin }) {
 
       const data = await response.json();
       if (response.ok && data.error_code === 200) {
-        onSignUpSuccess(data.user_id); // Assuming you want to automatically log in the user
+        onSignUpSuccess(data.user_id); 
       } else {
         setError(data.message || "An error occurred during signup.");
       }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Login from './components/Login'; // Make sure this path is correct
-import SignUp from './components/SignUp'; // Make sure this path is correct
-import IndexPage from './components/IndexPage'; // Make sure this path is correct
-import Ticker from './components/Ticker'; // Make sure this path is correct
-import UserProfile from './components/UserProfile'; // Make sure this path is correct
+import Login from './components/Login';
+import SignUp from './components/SignUp'; 
+import IndexPage from './components/IndexPage'; 
+import Ticker from './components/Ticker'; 
+import UserProfile from './components/UserProfile'; 
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('userId') !== null);

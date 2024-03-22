@@ -15,12 +15,12 @@ function Login({ onLoginSuccess, onSignUp }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [forgotPasswordAlert, setForgotPasswordAlert] = useState(false);
-  const [createAccountMessage, setCreateAccountMessage] = useState(false); // State to control displaying the message
+  const [createAccountMessage, setCreateAccountMessage] = useState(false);
 
   const handleForgotPassword = () => {
     console.log("Forgot password clicked");
     setForgotPasswordAlert(true);
-    // Set the state to display the message prompting to create a new account
+   
     setCreateAccountMessage(true);
   };
 

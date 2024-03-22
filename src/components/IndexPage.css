@@ -3,43 +3,43 @@
   border-collapse: separate;
   border-spacing: 0;
   font-family: 'Arial', sans-serif; /* Or any modern sans-serif font */
-  margin-top: 20px; /* Or as needed */
-  box-shadow: 0 2px 3px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  margin-top: 20px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1); 
 }
 
 .custom-table thead th {
-  background-color: #e9ecef; /* A light grey background for header */
-  color: #495057; /* Dark grey or black for text */
+  background-color: #e9ecef; 
+  color: #495057; 
   font-weight: bold;
   padding: 10px;
   text-align: left;
-  border-bottom: 2px solid #dee2e6; /* A solid line for the header bottom */
+  border-bottom: 2px solid #dee2e6; 
 }
 
 .custom-table tbody td {
   padding: 10px;
   text-align: left;
-  border-bottom: 1px solid #dee2e6; /* A light line for separating rows */
+  border-bottom: 1px solid #dee2e6; 
   vertical-align: middle;
 }
 
 .custom-table tbody tr:nth-child(even) {
-  background-color: #f8f9fa; /* A very light grey for even rows */
+  background-color: #f8f9fa; 
 }
 
 .custom-table tbody tr:hover {
-  background-color: #f1f1f1; /* A slightly different grey for hover */
+  background-color: #f1f1f1; 
 }
 
-/* Now apply a different color for the 'Total Portfolio Value' row if it is within the table */
+
 .custom-table tfoot tr {
   background-color: #6f8498;
   font-weight: bold;
 }
 
-/* IndexPage.css */
+
 .chart-container {
-  height: 400px; /* Example height */
+  height: 400px; 
 }
 
 .custom-table tfoot td {

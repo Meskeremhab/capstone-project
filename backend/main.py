@@ -402,17 +402,6 @@ def logout():
         session.pop("user_id")
     return jsonify({"message": "logged user out"}), 200
 
-# Route to handle OPTIONS requests for chart
-@app.route('/api/time_series', methods=["OPTIONS"])
-def chart_options():
-    response = make_response()
-    response.headers['Access-Control-Allow-Origin'] = request.headers.get('Origin', '*')
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-    return response
-
-# Route to handle POST requests for chart
 
 
 if __name__ == "__main__":
