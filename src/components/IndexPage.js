@@ -1,119 +1,129 @@
 import React, { useState, useEffect } from "react";
-import { Container, Alert, Form, Button, Navbar } from "react-bootstrap";
+import { Container, Alert, Navbar, Table, Form, Button } from "react-bootstrap";
+import "./IndexPage.css"; 
 import Modify from "./Modify";
-import { Line } from 'react-chartjs-2';
-import "./IndexPage.css"; // Import your custom CSS file
-import AppHeader from './AppHeader'; // Import the AppHeader component
+import Header from './Header'; 
+import Footer from './Footer'; 
+
 
 const IndexPage = ({ userId, onMoreInfoClick }) => {
   const [portfolioData, setPortfolioData] = useState(null);
   const [error, setError] = useState("");
   const [tickerInput, setTickerInput] = useState("");
-  const [data, setData] = useState(null);
+  
 
   useEffect(() => {
     const fetchPortfolio = async () => {
       try {
         const response = await fetch(`https://mcsbt-integration-416321.uc.r.appspot.com/${userId}`, {
-          headers: {
-            Accept: "application/json",
-          },
-          credentials: 'include', 
+          headers: { Accept: "application/json" },
+          credentials: 'include',
         });
-        if (!response.ok) {
-          throw new Error(`Failed to fetch portfolio for user ${userId}`);
-        }
+        
+      
+        if (!response.ok) throw new Error(`Failed to fetch portfolio for user ${userId}`);
         const data = await response.json();
         setPortfolioData(data);
+        
       } catch (error) {
         setError(error.message);
       }
     };
 
-    if (userId) {
-      fetchPortfolio();
-    }
+    if (userId) fetchPortfolio();
   }, [userId]);
+
+  
+  const renderTableRows = () => {
+    return portfolioData && Object.entries(portfolioData).map(([ticker, details]) => {
+      if (ticker !== 'portfolio_value') {
+        return (
+          <tr key={ticker}>
+            <td>{ticker}</td>
+            <td>{details.quantity}</td>
+            <td>${details.price.toFixed(2)}</td>
+            <td>${details.total_value.toFixed(2)}</td>
+            <td>{details.weighted_value.toFixed(2)}%</td>
+          </tr>
+        );
+      }
+      return null;
+    });
+  };
+
+  
 
   const handleInputChange = (event) => {
     setTickerInput(event.target.value);
   };
-
   const handleMoreInfoClickLocal = () => {
     onMoreInfoClick(tickerInput);
   };
-
-  const transformDataForChart = () => {
-    const labels = [];
-    const openData = [];
-
-    // Assuming you want to display the 'open' values over time
-    data && data.map(item => {
-      item.items.map((details) => {
-        Object.entries(details.details.daily_time_series["Time Series (Daily)"]).map(([date, values]) => {
-          labels.push(date);
-          openData.push(parseFloat(values["1. open"]));
-        });
-      });
-    });
-<Button variant="primary" onClick={handleMoreInfoClickLocal} className="custom-button">
-  Details
-</Button>
-
-    return {
-      labels,
-      datasets: [
-        {
-          label: 'Stock Open Prices',
-          data: openData,
-          fill: false,
-          borderColor: 'rgba(75,192,192,1)',
-        },
-      ],
-    };
-  };
-
-  const chartData = transformDataForChart();
-
+ 
   return (
     <>
-      <AppHeader /> {/* Render the AppHeader component */}
+    <Header userId={userId} />
       <Container className="custom-container">
         <Navbar bg="light" expand="lg" className="justify-content-between">
-          <Navbar.Brand>Welcome to the Portfolio</Navbar.Brand>
+          <Navbar.Brand>
+          {userId && <div className="text-xl">Welcome {userId}</div>}
+          </Navbar.Brand>
         </Navbar>
-
+  
         {error && <Alert variant="danger">{error}</Alert>}
-        {portfolioData && (
-          <>
-            <h2>Portfolio Details:</h2>
-            <pre>{JSON.stringify(portfolioData, null, 2)}</pre>
-          </>
-        )}
-        <Form>
-          <Form.Group controlId="tickerInput">
-            <Form.Label>Enter Ticker Symbol</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter ticker symbol"
-              value={tickerInput}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-          <Button variant="primary" onClick={handleMoreInfoClickLocal} className="custom-button">
-            Details
-          </Button>
-        </Form>
-        <Modify userId={userId} onActionComplete={handleMoreInfoClickLocal} />
-        {/* Chart display */}
-        {data && (
-          <div>
-            <Line data={chartData} />
-          </div>
-        )}
+        <Table className="custom-table">
+          <thead>
+            <tr>
+              <th>Ticker</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total Value</th>
+              <th>Weighted Value (%)</th>
+            </tr>
+          </thead>
+          <tbody>{renderTableRows()}</tbody>
+          <tfoot>
+            <tr>
+              <td colSpan="3">Total Portfolio Value</td>
+              <td colSpan="2">${portfolioData ? portfolioData.portfolio_value.toFixed(2) : ''}</td>
+            </tr>
+          </tfoot>
+        </Table>
+        <Table className="custom-table">
+              <tbody>
+                {/* First Row */}
+                <tr>
+                  <td>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter ticker symbol"
+                      value={tickerInput}
+                      onChange={handleInputChange}
+                    />
+                  </td>
+                  <td>
+                    <Button variant="primary" onClick={() => onMoreInfoClick(tickerInput)}>
+                      Details
+                    </Button>
+                  </td>
+                  {/* Empty cells for alignment */}
+                  <td></td>
+                  <td></td>
+                
+                </tr>
+                </tbody>
+                </Table>
+
+               
+     
+        {/* Modify component to handle all stock edits */}
+        <Modify userId={userId} onActionComplete={onMoreInfoClick} />
+
       </Container>
+      <Footer />
     </>
   );
+  
 };
 
 export default IndexPage;

@@ -1,0 +1,44 @@
+/* Footer CSS */
+.footer {
+    background-color: #6898a3; 
+    color: white;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 1rem;
+    padding: 2rem; 
+    align-items: center;
+    margin-top: 200px; 
+}
+
+.footer .footer-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.footer a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+/* The bottom part of the footer */
+.footer-bottom {
+    background-color: #82c0d5; 
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* You may want to add media queries to handle responsiveness */
+@media (max-width: 768px) {
+    .footer {
+        grid-template-columns: 1fr;
+        margin-top: 30px; /* You might want a smaller margin on smaller screens */
+    }
+}
+
+  
+
+
+  

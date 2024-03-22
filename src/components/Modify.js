@@ -53,7 +53,7 @@ const Modify = ({ userId, onActionComplete }) => {
         const result = await response.json();
         onActionComplete(result);
       } else {
-        // Assume delete was successful without needing to parse JSON
+    
   onActionComplete();
       }
     } catch (error) {
@@ -70,7 +70,7 @@ const Modify = ({ userId, onActionComplete }) => {
         <h2>Edit Stock</h2>
         {/* Action Type Select */}
         <Form.Group>
-          <Form.Label>Action Type</Form.Label>
+          <Form.Label></Form.Label>
           <Form.Control
             as="select"
             value={actionType}
@@ -78,7 +78,7 @@ const Modify = ({ userId, onActionComplete }) => {
             required
           >
             <option value="">Select Action</option>
-            <option value="create">Add New Stock</option>
+            <option value="create">Add Stock</option>
             <option value="modify">Modify Stock</option>
             <option value="delete">Delete Stock</option>
           </Form.Control>
@@ -86,12 +86,13 @@ const Modify = ({ userId, onActionComplete }) => {
 
         {/* Ticker Input */}
         <Form.Group>
-          <Form.Label>Ticker Symbol</Form.Label>
+          <Form.Label></Form.Label>
           <Form.Control
             type="text"
             name="ticker"
             value={formData.ticker}
             onChange={handleChange}
+            placeholder="Enter ticker symbol" // Placeholder added here
             required
           />
         </Form.Group>
@@ -99,12 +100,13 @@ const Modify = ({ userId, onActionComplete }) => {
         {/* Quantity Input */}
         {actionType !== 'delete' && (
           <Form.Group>
-            <Form.Label>Quantity</Form.Label>
+            <Form.Label></Form.Label>
             <Form.Control
               type="number"
               name="quantity"
               value={formData.quantity}
               onChange={handleChange}
+              placeholder="Enter quantity" // Placeholder added here
               required
             />
           </Form.Group>

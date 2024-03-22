@@ -30,7 +30,7 @@ const UserProfile = ({ userId, onLoggedOut }) => {
       </div>
       {isDropdownOpen && (
         <div>
-          <div>User ID: {userId}</div>
+          <div>User: {userId}</div>
           <button onClick={handleLogout}>Logout</button>
         </div>
       )}

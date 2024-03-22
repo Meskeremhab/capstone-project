@@ -413,31 +413,7 @@ def chart_options():
     return response
 
 # Route to handle POST requests for chart
-@app.route('/api/time_series', methods=['POST'])
-def chart():
-    try:
-        data = request.get_json()
-        user_id = data.get('user_id')
 
-        if not user_id:
-            return jsonify({"error": "Missing user_id"}), 400
-
-        client_stocks = user_info_by_id(user_id)
-
-        time_series_data = {}
-
-        for item in client_stocks:
-            ticker = item['ticker']
-            time_series = get_daily_time_series(ticker)
-
-            if time_series:
-                time_series_data[ticker] = time_series
-
-        return jsonify(time_series_data)
-
-    except Exception as e:
-        print(f"Error: {str(e)}")
-        return jsonify({"error": "Internal Server Error"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

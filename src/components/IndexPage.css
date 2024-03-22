@@ -1,39 +1,48 @@
-/* IndexPageButtons.css - Styling for buttons on the index page */
-
-.custom-button {
-  background-color: #007bff; /* Bootstrap blue */
-  border: none; /* Remove border */
-  color: white; /* Text color */
-  padding: 0.5rem 1rem; /* Padding for top, bottom, left, and right */
-  border-radius: 0.25rem; /* Rounded corners */
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Arial', sans-serif; /* Or any modern sans-serif font */
+  margin-top: 20px; /* Or as needed */
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1); /* Subtle shadow for depth */
 }
 
-.custom-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  color: #fff; /* Text color */
+.custom-table thead th {
+  background-color: #e9ecef; /* A light grey background for header */
+  color: #495057; /* Dark grey or black for text */
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 2px solid #dee2e6; /* A solid line for the header bottom */
 }
 
-.custom-button:active {
-  background-color: #004085; /* Even darker blue when pressed */
-  color: #ccc; /* Text color */
+.custom-table tbody td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6; /* A light line for separating rows */
+  vertical-align: middle;
 }
 
-.custom-button:focus {
-  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5); /* Bootstrap focus shadow */
+.custom-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa; /* A very light grey for even rows */
 }
 
-/* Adjust the size of the container if needed */
-.custom-container {
-  padding-top: 1rem; /* Top padding */
-  padding-bottom: 1rem; /* Bottom padding */
-  /* Add more styles as needed */
+.custom-table tbody tr:hover {
+  background-color: #f1f1f1; /* A slightly different grey for hover */
 }
 
-/* Style for the form input */
-.form-group .form-control {
-  border-radius: 0.25rem;
-  border: 1px solid #ced4da;
+/* Now apply a different color for the 'Total Portfolio Value' row if it is within the table */
+.custom-table tfoot tr {
+  background-color: #6f8498;
+  font-weight: bold;
 }
 
-/* You can add more custom styles below as needed */
+/* IndexPage.css */
+.chart-container {
+  height: 400px; /* Example height */
+}
+
+.custom-table tfoot td {
+  padding: 10px;
+  border-bottom: none;
+}
