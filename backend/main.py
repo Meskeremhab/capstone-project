@@ -267,11 +267,10 @@ def index(user_id):
                     continue
 
                 data = response.json()
-                latest_date = data["Global Quote"]["07. latest trading day"]
+               # latest_date = data["Global Quote"]["07. latest trading day"]
                 latest_close_price = float(data["Global Quote"]["05. price"])
 
                 item_dict[stock] = {
-                    "item_id": item["item_id"],
                     "quantity": item["quantity"],
                     "price": latest_close_price,
                     "total_value": round(latest_close_price * item["quantity"], 2)
@@ -299,18 +298,18 @@ def login():
     input_password = user_dict.get("password")
     input_password_hash = hash_value(input_password)
     user = users.query.filter_by(user_id=user_id).first()
-    print("user --------------------------",user)
+    
     if user and user.password_hash == input_password_hash:
-        print("user --------------------------",user,user_id)
+      
         session['user_id'] = user.user_id
-        print("session ---------------------------",session)
+        
         app.logger.debug('Session data after login: %s', session)  # Log session data here
         return jsonify({"error_code": 200, "message": "Login successful"}), 200
     else:
         return jsonify({"error_code": 400, "message": "Invalid user ID or password"}), 400
 
 
-# Route to handle user signup
+# Route to handle user signup (not included in the document)
 @app.route('/signup', methods=['POST'])
 def signup():
     user_dict = request.get_json()
@@ -327,7 +326,8 @@ def signup():
     db.session.add(new_user)
     db.session.commit()
     session['user_id'] = new_user.user_id
-    return jsonify({"error_code": 200, "message": "Signup successful"}), 200
+    return jsonify({"message": "Signup successful"}), 200
+
 
 # Route to handle stock details
 @app.route('/stock/<ticker>', methods=["GET"])
@@ -397,7 +397,7 @@ def edit_portfolio():
 # Route to handle user logout
 @app.route("/logout", methods=["POST"])
 def logout():
-    print("-----------------------session pop",session)
+    
     if "user_id" in session:
         session.pop("user_id")
     return jsonify({"message": "logged user out"}), 200

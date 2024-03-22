@@ -1,4 +1,3 @@
-// SignUp.js
 import './SignUp.css';
 import React, { useState } from "react";
 import { MDBBtn, MDBContainer, MDBCard, MDBCardBody, MDBCol, MDBRow, MDBInput, MDBIcon } from 'mdb-react-ui-kit';
@@ -43,7 +42,7 @@ function SignUp({ onSignUpSuccess, navigateToLogin }) {
 
       const data = await response.json();
       if (response.ok && data.error_code === 200) {
-        onSignUpSuccess(userId); // Assuming you want to automatically log in the user
+        onSignUpSuccess(data.user_id); // Assuming you want to automatically log in the user
       } else {
         setError(data.message || "An error occurred during signup.");
       }
@@ -55,24 +54,23 @@ function SignUp({ onSignUpSuccess, navigateToLogin }) {
     }
   };
 
-  const handleBackToLogin = () => {
+  const handleBackToLogin =() => {
     navigateToLogin();
   };
 
   return (
     <MDBContainer fluid className="sign-up-container">
-      <MDBCard className='sign-up-card shadow-5'>
+      <MDBCard className='sign-up-card shadow-5' style={{ borderRadius: '15px' }}>
         <MDBCardBody className='p-5 text-center'>
           <h2 className="fw-bold mb-5">Sign Up</h2>
-          
-          {/* Adjust the input fields as per your design requirements */}
-          <MDBInput wrapperClass='mb-4' id='firstName' type='text' value={userName} onChange={(e) => setUserName(e.target.value)} placeholder='First name          ' disabled={loading} />
-          <MDBInput wrapperClass='mb-4' id='lastName' type='text' value={userName} onChange={(e) => setUserName(e.target.value)} placeholder='Last name             ' disabled={loading} />
-          <MDBInput wrapperClass='mb-4' id='email' type='email' value={userMail} onChange={(e) => setUserMail(e.target.value)} placeholder='Email address           ' disabled={loading} />
-          <MDBInput wrapperClass='mb-4' id='password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password          ' disabled={loading} />
-
+          <MDBCol md="10" className="offset-md-1">
+            <MDBInput wrapperClass='mb-4' id='user_id' type='text' value={userId} onChange={(e) => setUserId(e.target.value)} placeholder='User ID' disabled={loading} required />
+            <MDBInput wrapperClass='mb-4' id='user_name' type='text' value={userName} onChange={(e) => setUserName(e.target.value)} placeholder='Name' disabled={loading} required />
+            <MDBInput wrapperClass='mb-4' id='user_mail' type='email' value={userMail} onChange={(e) => setUserMail(e.target.value)} placeholder='Email address' disabled={loading} required />
+            <MDBInput wrapperClass='mb-4' id='password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password' disabled={loading} required />
+            {error && <p className="text-danger mt-1 mb-0">{error}</p>}
+          </MDBCol>
           <MDBBtn className='w-100 mb-4 sign-up-button' size='md' onClick={handleSignUpSubmit} disabled={loading}>Sign Up</MDBBtn>
-
           <div className="mt-3">
             <p className="mb-0 text-center">
               Already have an account?{" "}
@@ -81,7 +79,6 @@ function SignUp({ onSignUpSuccess, navigateToLogin }) {
               </a>
             </p>
           </div>
-
         </MDBCardBody>
       </MDBCard>
     </MDBContainer>

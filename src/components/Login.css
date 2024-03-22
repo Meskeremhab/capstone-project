@@ -38,7 +38,7 @@
 }
 
 .login-button {
-  background-color: #043a73; /* blue background */
+  background-color: #10559f; /* blue background */
   color: white; /* white text */
   border: none; /* no border */
   padding: 10px 0; /* padding top and bottom */
@@ -55,7 +55,6 @@
 .login-form h3 {
   text-align: center;
 }
-
 
 .form-link {
   color: #083565; /* blue color */
