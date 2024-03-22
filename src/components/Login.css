@@ -1,0 +1,81 @@
+/* Login.css */
+
+.login-container {
+  background-color: #f0f2f5; /* light grey background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* full viewport height */
+  padding: 1rem; /* add some padding */
+}
+
+.login-form {
+  background: #f3efef;
+  padding: 3rem; /* Increase padding to give more space inside the box */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(18, 18, 18, 0.1);
+  width: 100%; /* Adjust width as needed */
+  max-width: 480px; /* Increase maximum width for a larger box */
+  margin: auto;
+}
+
+/* Adjust margins for input fields */
+.login-input {
+  margin-bottom: 20px; /* space between inputs */
+  border: none; /* no border */
+  padding: 10px 0; /* padding top and bottom */
+  border-radius: 4px; /* rounded corners */
+  width: 100%; 
+}
+
+/* Adjust margins for buttons and links */
+.form-button,
+.form-link {
+  display: block; /* ensures the element fills the width */
+  width: 100%; /* full width */
+  margin-top: 20px; /* space above */
+  margin-bottom: 20px; /* space below */
+}
+
+.login-button {
+  background-color: #043a73; /* blue background */
+  color: white; /* white text */
+  border: none; /* no border */
+  padding: 10px 0; /* padding top and bottom */
+  border-radius: 4px; /* rounded corners */
+  width: 100%; 
+}
+
+.login-form .mdb-input,
+.login-form .form-button {
+  width: 100%; /* Full width of the container */
+}
+
+
+.login-form h3 {
+  text-align: center;
+}
+
+
+.form-link {
+  color: #083565; /* blue color */
+  text-align: center; /* center align text */
+  text-decoration: none; /* no underline */
+  margin-bottom: 0; /* remove bottom margin */
+}
+
+.form-link:hover {
+  text-decoration: underline; /* underline on hover */
+}
+
+.error-message {
+  color: #d9534f; /* red color for errors */
+  text-align: center; /* center-align error text */
+  margin-bottom: 20px; /* space below error */
+}
+
+@media (max-width: 576px) {
+  .login-form {
+    padding: 1rem; /* less padding on smaller screens */
+  }
+}

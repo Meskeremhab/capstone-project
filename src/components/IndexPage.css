@@ -1,26 +1,39 @@
-/* IndexPage.css */
+/* IndexPageButtons.css - Styling for buttons on the index page */
 
-/* Custom font for headings */
-h1, h2 {
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Custom style for buttons */
-  .custom-button {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .custom-button:hover {
-    background-color: #0056b3; /* Darker shade of primary color */
-  }
-  
-  /* Custom background color for the container */
-  .custom-container {
-    background-color: #f0f0f0; /* Light gray background color */
-  }
-  
+.custom-button {
+  background-color: #007bff; /* Bootstrap blue */
+  border: none; /* Remove border */
+  color: white; /* Text color */
+  padding: 0.5rem 1rem; /* Padding for top, bottom, left, and right */
+  border-radius: 0.25rem; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.custom-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  color: #fff; /* Text color */
+}
+
+.custom-button:active {
+  background-color: #004085; /* Even darker blue when pressed */
+  color: #ccc; /* Text color */
+}
+
+.custom-button:focus {
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5); /* Bootstrap focus shadow */
+}
+
+/* Adjust the size of the container if needed */
+.custom-container {
+  padding-top: 1rem; /* Top padding */
+  padding-bottom: 1rem; /* Bottom padding */
+  /* Add more styles as needed */
+}
+
+/* Style for the form input */
+.form-group .form-control {
+  border-radius: 0.25rem;
+  border: 1px solid #ced4da;
+}
+
+/* You can add more custom styles below as needed */

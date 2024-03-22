@@ -39,12 +39,15 @@ function App() {
   const onSignUpSuccess = (userId) => {
     onLoginSuccess(userId);
   };
-
+  const navigateToLogin = () => {
+    setIsSigningUp(false);
+  };
   return (
     <div>
       {!isLoggedIn ? (
         isSigningUp ? (
-          <SignUp onSignUpSuccess={onSignUpSuccess} />
+          <SignUp onSignUpSuccess={onSignUpSuccess} navigateToLogin={navigateToLogin} />
+//<SignUp onSignUpSuccess={onSignUpSuccess} />
         ) : (
           <Login onLoginSuccess={onLoginSuccess} onSignUp={toggleSignUp} />
         )

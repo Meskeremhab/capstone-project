@@ -1,11 +1,28 @@
 import React, { useState } from "react";
-import { Form, Button, Container, Col, Alert } from "react-bootstrap";
+import Alert from 'react-bootstrap/Alert';
+import {
+  MDBBtn,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBInput
+} from 'mdb-react-ui-kit';
+import './Login.css';
 
 function Login({ onLoginSuccess, onSignUp }) {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [forgotPasswordAlert, setForgotPasswordAlert] = useState(false);
+  const [createAccountMessage, setCreateAccountMessage] = useState(false); // State to control displaying the message
+
+  const handleForgotPassword = () => {
+    console.log("Forgot password clicked");
+    setForgotPasswordAlert(true);
+    // Set the state to display the message prompting to create a new account
+    setCreateAccountMessage(true);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +44,7 @@ function Login({ onLoginSuccess, onSignUp }) {
 
       const data = await response.json();
       if (response.ok && data.error_code === 200) {
-        onLoginSuccess(userId); // Notify the parent component
+        onLoginSuccess(userId);
       } else {
         setError(data.message || "Invalid login credentials.");
       }
@@ -40,42 +57,33 @@ function Login({ onLoginSuccess, onSignUp }) {
   };
 
   return (
-    <Container>
-      <h2>Login</h2>
-      <Col md={6} className="mt-3">
-        {error && <Alert variant="danger">{error}</Alert>}
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="userId">
-            <Form.Label>User ID</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter user ID"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              disabled={loading}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-            />
-          </Form.Group>
-          <div className="d-flex justify-content-between">
-            <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
-            </Button>
-            <Button variant="secondary" onClick={onSignUp} disabled={loading}>
-              Sign Up
-            </Button>
-          </div>
-        </Form>
-      </Col>
-    </Container>
+    <MDBContainer className="login-container">
+      <div className="login-form">
+        <MDBRow>
+          <MDBCol className="text-center">
+            <h3 className="mb-4">Please login to your account</h3>
+          </MDBCol>
+        </MDBRow>
+
+        {error && <div className="error-message">{error}</div>}
+        {createAccountMessage && <div className="error-message">Please create a new account</div>}
+
+        <MDBInput className='mb-4 login-input' placeholder='User ID' type='text' value={userId} onChange={(e) => setUserId(e.target.value)} disabled={loading} />
+        <MDBInput className='mb-4 login-input' placeholder='Password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} disabled={loading} />
+
+        <MDBBtn className="mb-4 form-button login-button" onClick={handleSubmit} disabled={loading}>
+          {loading ? "Logging in..." : "LOGIN"}
+        </MDBBtn>
+
+        <div className="text-center mb-4">
+          <a className="form-link" href="#!" onClick={handleForgotPassword}>Forgot password?</a>
+        </div>
+
+        <div className="text-center">
+          <a className="form-link" href="#!" onClick={onSignUp}>Don't have an account? Register here</a>
+        </div>
+      </div>
+    </MDBContainer>
   );
 }
 

@@ -1,0 +1,87 @@
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Full page container */
+  .sign-up-container {   
+    background-color: #f0f2f5; /* light grey background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* full viewport height */
+    padding: 1rem; /* add some padding */
+  }
+  
+  /* Card styling */
+  .sign-up-card {
+    background-color: #ffffff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 480px;
+    width: 100%;
+    margin: 0 1rem; /* Horizontal margin for smaller screens */
+  }
+  
+  /* Title styling */
+  .sign-up-card h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 2rem;
+    text-align: center;
+   
+  }
+  
+  /* Input field styling */
+  .sign-up-card .MDBInput input {
+    width: 100%; /* Full width */
+    padding: 10px 0px; /* Matching padding with the button */
+    margin-bottom: 20px; /* Spacing between inputs */
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    display: block; /* ensures the element fills the width */
+    margin-top: 20px; /* space above */
+  }
+  
+  /* Sign Up button styling */
+  .sign-up-card .sign-up-button {
+    width: 100%; /* Full width to match inputs */
+    padding: 10px 15px; /* Same padding as input fields */
+    background-color: #0056b3; /* Button color */
+    color: white;
+    border: none; /* No border for the button */
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-top: 1.5rem; /* Spacing above the button */
+    cursor: pointer;
+  }
+  
+  .sign-up-card .sign-up-button:hover {
+    background-color: #004494; /* Darken the button on hover */
+  }
+  
+  /* Link styling */
+  .sign-up-card .text-center a {
+    color: #0056b3;
+    text-decoration: none;
+    display: block; /* Make links block level for easier clicking */
+    margin-top: 1rem; /* Space between button and links */
+    font-size: 0.9rem;
+  }
+  
+  .sign-up-card .text-center a:hover {
+    text-decoration: underline; /* Underline on hover for better UX */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .sign-up-card {
+      padding: 2rem;
+      margin: 2rem; /* Add more margin on smaller screens */
+    }
+  }
+  

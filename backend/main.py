@@ -1,7 +1,6 @@
 import requests
 from flask import Flask, jsonify, request, make_response, session, redirect
 from flask_cors import CORS, cross_origin
-from flask.sessions import SecureCookieSessionInterface
 import oracledb
 from models import db, users, portfolioitem
 from sqlalchemy.pool import NullPool
@@ -20,10 +19,7 @@ un = 'Portfolio'
 pw = 'Userpass12#$'
 dsn = '(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.eu-madrid-1.oraclecloud.com))(connect_data=(service_name=gbe27b698b06820_stocks_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))'
 
-# Create an Oracle database connection pool
 pool = oracledb.create_pool(user=un, password=pw, dsn=dsn)
-
-# Configure SQLAlchemy to use the Oracle database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'oracle+oracledb://'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
@@ -34,10 +30,8 @@ app.config['SQLALCHEMY_ECHO'] = True
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# Initialize SQLAlchemy with the Flask app
-db.init_app(app)
 
-# Define a function to hash a string using SHA-1
+db.init_app(app)
 def hash_value(string):
     hash_obj = sha1()
     hash_obj.update(string.encode())
@@ -94,7 +88,6 @@ def signup_options():
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
     return response
 
-# Function to retrieve user information by user_id from the database
 def user_info_by_id(user_id):
     try:
         user = users.query.filter_by(user_id=user_id).first()
@@ -119,7 +112,6 @@ def user_info_by_id(user_id):
         print(f"Error while fetching user info by id: {str(e)}")
         return []
 
-# Function to generate a unique item ID
 def generate_item_id():
     last_item = portfolioitem.query.order_by(portfolioitem.item_id.desc()).first()
     if last_item:
@@ -130,7 +122,6 @@ def generate_item_id():
         new_item_id = "item001"
     return new_item_id
 
-# Function to get daily time series data for a given ticker from AlphaVantage API
 def get_daily_time_series(ticker):
     ticker_exists = portfolioitem.query.filter_by(ticker=ticker).first()
     if not ticker_exists:
@@ -150,10 +141,7 @@ def get_daily_time_series(ticker):
 
 # Function to get the user ID from the session
 def get_user_id():
-    print("sessssiooon",session)
     return session['user_id']
-
-    #return session.get('user_id')
 
 # Function to validate portfolio item data
 def is_valid_portfolio_data(data):
@@ -263,16 +251,6 @@ def modify_existing(data):
         db.session.rollback()
         return jsonify({"error_code": 500, "message": f"Error modifying portfolio item: {str(e)}"}), 500
 
-
-# Route to handle GET requests for user portfolio
-@app.route('/edit_stock', methods=["OPTIONS"])
-def edit_stock_options():
-    response = make_response()
-    response.headers['Access-Control-Allow-Origin'] = request.headers.get('Origin', '*')
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-    return response
 @app.route('/<user_id>', methods=['GET'])
 def index(user_id):
     try:
@@ -384,6 +362,15 @@ def api_stock(ticker):
         return jsonify({"error": "Internal Server Error"}), 500
 
 # Route to handle portfolio item creation, modification, and deletion
+# Route to handle GET requests for user portfolio
+@app.route('/edit_stock', methods=["OPTIONS"])
+def edit_stock_options():
+    response = make_response()
+    response.headers['Access-Control-Allow-Origin'] = request.headers.get('Origin', '*')
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
 @app.route('/edit_stock', methods=["POST", "PUT", "DELETE"])
 def edit_portfolio():
     print("here ?")
@@ -452,9 +439,5 @@ def chart():
         print(f"Error: {str(e)}")
         return jsonify({"error": "Internal Server Error"}), 500
 
-# Log session before request
-
-
-# Run the Flask app
 if __name__ == "__main__":
     app.run(debug=True)

@@ -78,8 +78,8 @@ const Modify = ({ userId, onActionComplete }) => {
             required
           >
             <option value="">Select Action</option>
-            <option value="create">Create New Stock</option>
-            <option value="modify">Modify Existing Stock</option>
+            <option value="create">Add New Stock</option>
+            <option value="modify">Modify Stock</option>
             <option value="delete">Delete Stock</option>
           </Form.Control>
         </Form.Group>

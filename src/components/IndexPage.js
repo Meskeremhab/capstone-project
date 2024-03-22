@@ -1,9 +1,9 @@
-// IndexPage.js
 import React, { useState, useEffect } from "react";
 import { Container, Alert, Form, Button, Navbar } from "react-bootstrap";
 import Modify from "./Modify";
 import { Line } from 'react-chartjs-2';
 import "./IndexPage.css"; // Import your custom CSS file
+import AppHeader from './AppHeader'; // Import the AppHeader component
 
 const IndexPage = ({ userId, onMoreInfoClick }) => {
   const [portfolioData, setPortfolioData] = useState(null);
@@ -56,6 +56,9 @@ const IndexPage = ({ userId, onMoreInfoClick }) => {
         });
       });
     });
+<Button variant="primary" onClick={handleMoreInfoClickLocal} className="custom-button">
+  Details
+</Button>
 
     return {
       labels,
@@ -73,43 +76,43 @@ const IndexPage = ({ userId, onMoreInfoClick }) => {
   const chartData = transformDataForChart();
 
   return (
-    <Container className="custom-container">
-      <Navbar bg="light" expand="lg" className="justify-content-between">
-        <Navbar.Brand>Welcome to the Portfolio</Navbar.Brand>
-      </Navbar>
+    <>
+      <AppHeader /> {/* Render the AppHeader component */}
+      <Container className="custom-container">
+        <Navbar bg="light" expand="lg" className="justify-content-between">
+          <Navbar.Brand>Welcome to the Portfolio</Navbar.Brand>
+        </Navbar>
 
-      {error && <Alert variant="danger">{error}</Alert>}
-      {portfolioData && (
-        <>
-          <h2>Portfolio Details:</h2>
-          <pre>{JSON.stringify(portfolioData, null, 2)}</pre>
-        </>
-      )}
-      <Form>
-        <Form.Group controlId="tickerInput">
-          <Form.Label>Enter Ticker Symbol</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter ticker symbol"
-            value={tickerInput}
-            onChange={handleInputChange}
-          />
-        </Form.Group>
-        <Button variant="primary" onClick={handleMoreInfoClickLocal} className="custom-button">
-          Details
-        </Button>
-      </Form>
-      <Modify userId={userId} onActionComplete={handleMoreInfoClickLocal} />
-      {/* Chart display */}
-      <div>
-        <h1>Stock Data</h1>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {portfolioData && (
+          <>
+            <h2>Portfolio Details:</h2>
+            <pre>{JSON.stringify(portfolioData, null, 2)}</pre>
+          </>
+        )}
+        <Form>
+          <Form.Group controlId="tickerInput">
+            <Form.Label>Enter Ticker Symbol</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter ticker symbol"
+              value={tickerInput}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
+          <Button variant="primary" onClick={handleMoreInfoClickLocal} className="custom-button">
+            Details
+          </Button>
+        </Form>
+        <Modify userId={userId} onActionComplete={handleMoreInfoClickLocal} />
+        {/* Chart display */}
         {data && (
           <div>
             <Line data={chartData} />
           </div>
         )}
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 };
 
